@@ -121,6 +121,7 @@ const SelectTime = () => {
   const [time, setTime] = useState({
     minute: 0,
     hour: 0,
+    label:""
   });
   const style = styles(options);
   const openAnimation = useRef(new Animated.Value(0)).current;
@@ -130,6 +131,7 @@ const SelectTime = () => {
       setTime({
         minute: 0,
         hour: 0,
+        label:""
       });
   }, [show]);
 
@@ -148,6 +150,9 @@ const SelectTime = () => {
   const selectTime = () => {
     const newTime = utils.getDate(mainState.activeDate);
     newTime.hour(time.hour).minute(time.minute);
+    const formattedTime = utils.getFormated(newTime, 'timeFormat') + ' ' + time.label;
+
+
     setMainState({
       type: 'set',
       activeDate: utils.getFormated(newTime),
@@ -160,7 +165,7 @@ const SelectTime = () => {
           )
         : '',
     });
-    onTimeChange(utils.getFormated(newTime, 'timeFormat'));
+    onTimeChange(formattedTime);
     mode !== 'time' &&
       setMainState({
         type: 'toggleTime',
@@ -186,7 +191,7 @@ const SelectTime = () => {
     <Animated.View style={containerStyle}>
       <TimeScroller
         title={utils.config.hour}
-        data={Array.from({length: 24}, (x, i) => i)}
+        data={Array.from({length: 12}, (x, i) => i+1)}
         onChange={hour => setTime({...time, hour})}
       />
       <TimeScroller
@@ -194,6 +199,12 @@ const SelectTime = () => {
         data={Array.from({length: 60 / minuteInterval}, (x, i) => i * minuteInterval)}
         onChange={minute => setTime({...time, minute})}
       />
+      <TimeScroller
+        title={utils.config.hour}
+        data={["AM", "PM"]}
+        onChange={label => setTime({...time, label})}
+      />
+
       <View style={style.footer}>
         <TouchableOpacity style={style.button} activeOpacity={0.8} onPress={selectTime}>
           <Text style={style.btnText}>{utils.config.timeSelect}</Text>

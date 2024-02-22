@@ -55,6 +55,7 @@ const DatePicker = props => {
         : '',
       monthOpen: props.mode === 'monthYear',
       timeOpen: props.mode === 'time',
+      use24HourFormat: PropTypes.bool
     }),
   };
   const [minHeight, setMinHeight] = useState(300);

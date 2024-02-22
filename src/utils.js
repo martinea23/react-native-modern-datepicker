@@ -54,10 +54,11 @@ const gregorianConfigs = {
   minute: 'Minute',
   timeSelect: 'Select',
   timeClose: 'Close',
+  Label: "Period"
 };
 
 class utils {
-  constructor({minimumDate, maximumDate, isGregorian, mode, reverse, configs}) {
+  constructor({minimumDate, maximumDate, isGregorian, mode, reverse, configs, use24HourFormat}) {
     this.data = {
       minimumDate,
       maximumDate,
@@ -67,8 +68,9 @@ class utils {
     this.config = isGregorian ? gregorianConfigs : jalaaliConfigs;
     this.config = {...this.config, ...configs};
     if (mode === 'time' || mode === 'datepicker') {
-      this.config.selectedFormat = this.config.dateFormat + ' ' + this.config.timeFormat;
+      this.config.selectedFormat = this.config.dateFormat + ' ' + this.config.timeFormat ;
     }
+    this.config.timeFormat = use24HourFormat ? 'HH:mm' : 'hh:mm A';
   }
 
   get flexDirection() {
@@ -79,7 +81,7 @@ class utils {
 
   getFormatedDate = (date = new Date(), format = 'YYYY/MM/DD') => moment(date).format(format);
 
-  getTime = (time) => this.getDate(time).format(this.config.timeFormat);
+  getTime = (time) => this.getDate(time).format(this.config.timeFormat );
 
   getToday = () => this.getFormated(m, 'dateFormat');
 

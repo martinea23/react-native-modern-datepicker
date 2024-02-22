@@ -115,7 +115,7 @@ const TimeScroller = ({title, data, onChange}) => {
 };
 
 const SelectTime = () => {
-  const {options, state, utils, minuteInterval, mode, onTimeChange} = useCalendar();
+  const {options, state, utils, minuteInterval, mode, onTimeChange, use24HourFormat} = useCalendar();
   const [mainState, setMainState] = state;
   const [show, setShow] = useState(false);
   const [time, setTime] = useState({
@@ -189,21 +189,34 @@ const SelectTime = () => {
 
   return show ? (
     <Animated.View style={containerStyle}>
-      <TimeScroller
+      {!use24HourFormat && (
+        <TimeScroller
         title={utils.config.hour}
         data={Array.from({length: 12}, (x, i) => i+1)}
         onChange={hour => setTime({...time, hour})}
       />
+      )} 
+      {use24HourFormat && (
+        <TimeScroller
+        title={utils.config.hour}
+        data={Array.from({length: 24}, (x, i) => i)}
+        onChange={hour => setTime({...time, hour})}
+      />
+      )} 
+      
       <TimeScroller
         title={utils.config.minute}
         data={Array.from({length: 60 / minuteInterval}, (x, i) => i * minuteInterval)}
         onChange={minute => setTime({...time, minute})}
       />
-      <TimeScroller
-        title={utils.config.hour}
-        data={["AM", "PM"]}
-        onChange={label => setTime({...time, label})}
-      />
+
+      {!use24HourFormat && (
+        <TimeScroller
+          title={utils.config.Label}
+          data={['AM', 'PM']}
+          onChange={(label) => setTime({ ...time, label })}
+        />
+      )}
 
       <View style={style.footer}>
         <TouchableOpacity style={style.button} activeOpacity={0.8} onPress={selectTime}>

@@ -127,12 +127,22 @@ const SelectTime = () => {
   const openAnimation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    show &&
+    if(use24HourFormat){
+      show &&
       setTime({
         minute: 0,
         hour: 0,
         label:""
       });
+    }else{
+       show &&
+      setTime({
+        minute: 0,
+        hour: 1,
+        label:"AM"
+      });
+    }
+    
   }, [show]);
 
   useEffect(() => {
@@ -150,8 +160,13 @@ const SelectTime = () => {
   const selectTime = () => {
     const newTime = utils.getDate(mainState.activeDate);
     newTime.hour(time.hour).minute(time.minute);
-    const formattedTime = utils.getFormated(newTime, 'timeFormat') + ' ' + time.label;
-
+    formattedDate = "";
+    if(use24HourFormat){
+      formattedTime = utils.getFormated(newTime, 'timeFormat');
+    }else{
+      formattedTime = utils.getFormated(newTime, 'timeFormat') + ' ' + time.label;
+    }
+    
 
     setMainState({
       type: 'set',

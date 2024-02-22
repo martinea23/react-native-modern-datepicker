@@ -70,7 +70,7 @@ class utils {
     if (mode === 'time' || mode === 'datepicker') {
       this.config.selectedFormat = this.config.dateFormat + ' ' + this.config.timeFormat ;
     }
-    this.config.timeFormat = use24HourFormat ? 'HH:mm' : 'hh:mm A';
+    this.config.timeFormat = use24HourFormat ? 'HH:mm' : 'hh:mm';
   }
 
   get flexDirection() {
